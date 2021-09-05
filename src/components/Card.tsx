@@ -22,7 +22,7 @@ const Card: React.FC<CardProps> = ({ data, actions }) => {
                 - {key}:{' '}
                 {typeof data[key] === 'object' ? (
                   <Paper style={{ padding: 10 }} variant="outlined" square>
-                    <pre>{JSON.stringify(data[key])}</pre>
+                    <pre>{JSON.stringify(data[key], null, 2)}</pre>
                   </Paper>
                 ) : (
                   data[key]

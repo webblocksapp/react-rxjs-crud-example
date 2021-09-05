@@ -1,4 +1,3 @@
-import { useReducer } from 'react';
 import { CustomerState } from '../app-types';
 import { Customer } from '../interfaces';
 
@@ -35,7 +34,7 @@ export const useCustomerReducer = () => {
     return { ...state, customers, error: '' };
   };
 
-  const reducer = (state: CustomerState = initialState, action: Action) => {
+  return (state: CustomerState = initialState, action: Action) => {
     switch (action.type) {
       case 'CUSTOMER:ADD':
         return add(action.customer, state);
@@ -47,8 +46,4 @@ export const useCustomerReducer = () => {
         return state;
     }
   };
-
-  const [customerState, dispatch] = useReducer(reducer, initialState);
-
-  return { state: customerState, dispatch, reducer };
 };

@@ -1,8 +1,9 @@
-import { useCustomerReducer } from '../reducers';
+import { useDispatch, useSelector } from 'react-redux';
 import { Customer } from '../interfaces';
 
 export const useCustomerRepository = () => {
-  const { state, dispatch } = useCustomerReducer();
+  const dispatch = useDispatch();
+  const customerState = useSelector((state: any) => state.customerState);
 
   const create = (customer: Customer) => {
     dispatch({ type: 'CUSTOMER:ADD', customer });
@@ -20,6 +21,6 @@ export const useCustomerRepository = () => {
     create,
     update,
     remove,
-    ...state,
+    ...customerState,
   };
 };

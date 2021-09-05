@@ -12,7 +12,7 @@ const MainScreen: React.FC = () => {
   return (
     <>
       <Grid container spacing={2}>
-        {productRepository.customers.map((customer, index) => (
+        {productRepository.customers.map((customer: any, index: any) => (
           <Grid key={index} item xs={12} md={4}>
             <Card
               data={customer}

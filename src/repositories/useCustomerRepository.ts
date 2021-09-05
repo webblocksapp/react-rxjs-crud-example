@@ -8,7 +8,7 @@ export const useCustomerRepository = () => {
   const customerState = useSelector((state: RootState) => state.customerState);
 
   const create = (customer: Customer) => {
-    dispatch({ type: 'CUSTOMER:ADD', customer });
+    dispatch({ type: 'CUSTOMER:CREATE', customer });
   };
 
   const update = (id: number, customer: Customer) => {

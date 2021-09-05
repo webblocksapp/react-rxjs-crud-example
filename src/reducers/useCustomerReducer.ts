@@ -1,10 +1,5 @@
-import { CustomerState } from '../app-types';
+import { CustomerAction, CustomerState } from '../app-types';
 import { Customer } from '../interfaces';
-
-type Action =
-  | { type: 'CUSTOMER:ADD'; customer: Customer }
-  | { type: 'CUSTOMER:UPDATE'; id: number; customer: Customer }
-  | { type: 'CUSTOMER:REMOVE'; id: number };
 
 const initialState: CustomerState = {
   customers: [],
@@ -34,7 +29,7 @@ export const useCustomerReducer = () => {
     return { ...state, customers, error: '' };
   };
 
-  return (state: CustomerState = initialState, action: Action) => {
+  return (state: CustomerState = initialState, action: CustomerAction) => {
     switch (action.type) {
       case 'CUSTOMER:ADD':
         return add(action.customer, state);

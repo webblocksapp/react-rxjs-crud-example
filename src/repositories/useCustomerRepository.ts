@@ -1,9 +1,11 @@
+import { Dispatch } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { CustomerAction, RootState } from '../app-types';
 import { Customer } from '../interfaces';
 
 export const useCustomerRepository = () => {
-  const dispatch = useDispatch();
-  const customerState = useSelector((state: any) => state.customerState);
+  const dispatch = useDispatch<Dispatch<CustomerAction>>();
+  const customerState = useSelector((state: RootState) => state.customerState);
 
   const create = (customer: Customer) => {
     dispatch({ type: 'CUSTOMER:ADD', customer });

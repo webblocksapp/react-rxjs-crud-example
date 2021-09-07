@@ -12,7 +12,7 @@ const MainScreen: React.FC = () => {
   const [limit, setLimit] = useState<number>(9);
 
   useEffect(() => {
-    productRepository.find({ _page: page, _limit: limit });
+    productRepository.list({ _page: page, _limit: limit });
   }, [page]);
 
   return (

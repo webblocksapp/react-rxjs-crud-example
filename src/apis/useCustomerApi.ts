@@ -6,9 +6,21 @@ import { toQueryString } from '../utils/functions';
 const baseApi = process.env.REACT_APP_BASE_API;
 
 export const useCustomerApi = () => {
-  const find = (filters: ApiFilter): Promise<AxiosResponse<Customer>> => {
+  const list = (filters?: ApiFilter): Promise<AxiosResponse<Customer>> => {
     return axios.get(`${baseApi}/customers${toQueryString(filters)}`);
   };
 
-  return { find };
+  const create = (customer: Customer): Promise<AxiosResponse<Customer>> => {
+    return axios.post(`${baseApi}/customers`, customer);
+  };
+
+  const update = (id: number, customer: Customer): Promise<AxiosResponse<Customer>> => {
+    return axios.put(`${baseApi}/customers/${id}`, customer);
+  };
+
+  const remove = (id: number): Promise<AxiosResponse<Customer>> => {
+    return axios.delete(`${baseApi}/customers/${id}`);
+  };
+
+  return { list, create, update, remove };
 };

@@ -3,44 +3,63 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useCustomerApi } from '../apis';
 import { ApiFilter, CustomerAction, RootState } from '../app-types';
 import { Customer } from '../interfaces';
-import { getResponseData, getResponseErrorMessage } from '../utils/functions';
+import { handleAxiosApi, getResponseErrorMessage } from '../utils/functions';
 
 export const useCustomerRepository = () => {
   const dispatch = useDispatch<Dispatch<CustomerAction>>();
   const customerState = useSelector((state: RootState) => state.customerState);
   const customerApi = useCustomerApi();
 
-  const find = async (filters: ApiFilter) => {
+  const list = async (filters: ApiFilter) => {
     try {
-      const customers = await getResponseData<Customer[]>(customerApi.find(filters));
-      list(customers);
+      dispatch({ type: 'CUSTOMER:LISTING', flag: true });
+      const customers = await handleAxiosApi<Customer[]>(customerApi.list(filters));
+      dispatch({ type: 'CUSTOMER:LIST', customers });
     } catch (error) {
-      setError(getResponseErrorMessage(error));
+      dispatch({ type: 'CUSTOMER:ERROR_ON_LIST', message: getResponseErrorMessage(error) });
+    } finally {
+      dispatch({ type: 'CUSTOMER:LISTING', flag: false });
     }
   };
 
-  const list = (customers: Customer[]) => {
-    dispatch({ type: 'CUSTOMER:LIST', customers });
+  const create = async (customer: Customer) => {
+    try {
+      dispatch({ type: 'CUSTOMER:CREATING', flag: true });
+      const createdCustomer = await handleAxiosApi<Customer>(customerApi.create(customer));
+      dispatch({ type: 'CUSTOMER:CREATE', customer: createdCustomer });
+    } catch (error) {
+      dispatch({ type: 'CUSTOMER:ERROR_ON_CREATE', message: getResponseErrorMessage(error) });
+    } finally {
+      dispatch({ type: 'CUSTOMER:CREATING', flag: false });
+    }
   };
 
-  const create = (customer: Customer) => {
-    dispatch({ type: 'CUSTOMER:CREATE', customer });
+  const update = async (id: number, customer: Customer) => {
+    try {
+      dispatch({ type: 'CUSTOMER:UPDATING', flag: true });
+      const updatedCustomer = await handleAxiosApi<Customer>(customerApi.update(id, customer));
+      dispatch({ type: 'CUSTOMER:UPDATE', id, customer: updatedCustomer });
+    } catch (error) {
+      dispatch({ type: 'CUSTOMER:ERROR_ON_UPDATE', message: getResponseErrorMessage(error) });
+    } finally {
+      dispatch({ type: 'CUSTOMER:UPDATING', flag: false });
+    }
   };
 
-  const update = (id: number, customer: Customer) => {
-    dispatch({ type: 'CUSTOMER:UPDATE', id, customer });
-  };
-
-  const remove = (id: number) => {
-    dispatch({ type: 'CUSTOMER:REMOVE', id });
-  };
-
-  const setError = (error: string) => {
-    dispatch({ type: 'CUSTOMER:ERROR', error });
+  const remove = async (id: number) => {
+    try {
+      dispatch({ type: 'CUSTOMER:REMOVING', flag: true });
+      await handleAxiosApi(customerApi.remove(id));
+      dispatch({ type: 'CUSTOMER:REMOVE', id });
+    } catch (error) {
+      dispatch({ type: 'CUSTOMER:ERROR_ON_REMOVE', message: getResponseErrorMessage(error) });
+    } finally {
+      dispatch({ type: 'CUSTOMER:REMOVING', flag: false });
+    }
   };
 
   return {
-    find,
+    list,
     create,
     update,
     remove,

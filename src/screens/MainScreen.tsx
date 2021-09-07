@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useCustomerRepository } from '../repositories';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -8,6 +8,12 @@ import { randomCustomer } from '../utils/functions';
 
 const MainScreen: React.FC = () => {
   const productRepository = useCustomerRepository();
+  const [page, setPage] = useState<number>(1);
+  const [limit, setLimit] = useState<number>(9);
+
+  useEffect(() => {
+    productRepository.find({ _page: page, _limit: limit });
+  }, [page]);
 
   return (
     <>

@@ -7,6 +7,7 @@ import CardSkeleton from '../components/CardSkeleton';
 import CustomerCard from '../components/CustomerCard';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Alert from '@material-ui/lab/Alert';
 
 const MainScreen: React.FC = () => {
   const customerRepository = useCustomerRepository();
@@ -17,6 +18,9 @@ const MainScreen: React.FC = () => {
 
   return (
     <>
+      {customerRepository.updating && <Alert severity="info">A record is being updated</Alert>}
+      {customerRepository.removing && <Alert severity="info">A record is being deleted</Alert>}
+      <br />
       {customerRepository.listing ? (
         <Typography variant="body1">Listing...</Typography>
       ) : (

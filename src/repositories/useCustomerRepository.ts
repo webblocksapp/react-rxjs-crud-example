@@ -1,7 +1,7 @@
 import { Dispatch } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCustomerApi } from '../apis';
-import { ApiFilter, CustomerAction, RootState } from '../app-types';
+import { CustomerAction, RootState } from '../app-types';
 import { Customer } from '../interfaces';
 import { handleAxiosApi, getResponseErrorMessage } from '../utils/functions';
 
@@ -10,10 +10,10 @@ export const useCustomerRepository = () => {
   const customerState = useSelector((state: RootState) => state.customerState);
   const customerApi = useCustomerApi();
 
-  const list = async (filters: ApiFilter) => {
+  const list = async () => {
     try {
       dispatch({ type: 'CUSTOMER:LISTING', flag: true });
-      const customers = await handleAxiosApi<Customer[]>(customerApi.list(filters));
+      const customers = await handleAxiosApi<Customer[]>(customerApi.list());
       dispatch({ type: 'CUSTOMER:LIST', customers });
     } catch (error) {
       dispatch({ type: 'CUSTOMER:ERROR_ON_LIST', message: getResponseErrorMessage(error) });

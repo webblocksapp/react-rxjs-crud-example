@@ -20,6 +20,8 @@ const MainScreen: React.FC = () => {
     <>
       {customerRepository.updating && <Alert severity="info">A record is being updated</Alert>}
       {customerRepository.removing && <Alert severity="info">A record is being deleted</Alert>}
+      {customerRepository.error && <Alert severity="error">{customerRepository.error}</Alert>}
+
       <br />
       {customerRepository.listing ? (
         <Typography variant="body1">Listing...</Typography>

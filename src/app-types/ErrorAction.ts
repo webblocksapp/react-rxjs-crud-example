@@ -1,5 +1,5 @@
 export type ErrorAction<T extends string> =
-  | { type: `${T}:ERROR_ON_LIST`; message: string }
-  | { type: `${T}:ERROR_ON_CREATE`; message: string }
-  | { type: `${T}:ERROR_ON_UPDATE`; message: string }
-  | { type: `${T}:ERROR_ON_REMOVE`; message: string };
+  | { type: `${T}:LIST_FAILED`; message: string }
+  | { type: `${T}:CREATE_FAILED`; message: string }
+  | { type: `${T}:UPDATE_FAILED`; message: string }
+  | { type: `${T}:REMOVE_FAILED`; message: string };

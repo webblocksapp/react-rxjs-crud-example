@@ -16,7 +16,7 @@ export const useCustomerRepository = () => {
       const customers = await handleAxiosApi<Customer[]>(customerApi.list());
       dispatch({ type: 'CUSTOMER:LIST', customers });
     } catch (error) {
-      dispatch({ type: 'CUSTOMER:ERROR_ON_LIST', message: getResponseErrorMessage(error) });
+      dispatch({ type: 'CUSTOMER:LIST_FAILED', message: getResponseErrorMessage(error) });
     } finally {
       dispatch({ type: 'CUSTOMER:LISTING', flag: false });
     }
@@ -28,7 +28,7 @@ export const useCustomerRepository = () => {
       const createdCustomer = await handleAxiosApi<Customer>(customerApi.create(customer));
       dispatch({ type: 'CUSTOMER:CREATE', customer: createdCustomer });
     } catch (error) {
-      dispatch({ type: 'CUSTOMER:ERROR_ON_CREATE', message: getResponseErrorMessage(error) });
+      dispatch({ type: 'CUSTOMER:CREATE_FAILED', message: getResponseErrorMessage(error) });
     } finally {
       dispatch({ type: 'CUSTOMER:CREATING', flag: false });
     }
@@ -40,7 +40,7 @@ export const useCustomerRepository = () => {
       const updatedCustomer = await handleAxiosApi<Customer>(customerApi.update(id, customer));
       dispatch({ type: 'CUSTOMER:UPDATE', id, customer: updatedCustomer });
     } catch (error) {
-      dispatch({ type: 'CUSTOMER:ERROR_ON_UPDATE', message: getResponseErrorMessage(error) });
+      dispatch({ type: 'CUSTOMER:UPDATE_FAILED', message: getResponseErrorMessage(error) });
     } finally {
       dispatch({ type: 'CUSTOMER:UPDATING', flag: false });
     }
@@ -52,7 +52,7 @@ export const useCustomerRepository = () => {
       await handleAxiosApi(customerApi.remove(id));
       dispatch({ type: 'CUSTOMER:REMOVE', id });
     } catch (error) {
-      dispatch({ type: 'CUSTOMER:ERROR_ON_REMOVE', message: getResponseErrorMessage(error) });
+      dispatch({ type: 'CUSTOMER:REMOVE_FAILED', message: getResponseErrorMessage(error) });
     } finally {
       dispatch({ type: 'CUSTOMER:REMOVING', flag: false });
     }

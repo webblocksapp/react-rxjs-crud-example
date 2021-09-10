@@ -64,23 +64,25 @@ export const useCustomerReducer = () => {
         return list(action.customers, state);
       case 'CUSTOMER:LISTING':
         return listing(action.flag, state);
-      case 'CUSTOMER:ERROR_ON_LIST':
+      case 'CUSTOMER:LIST_FAILED':
         return error(action.message, state);
       case 'CUSTOMER:CREATE':
         return create(action.customer, state);
       case 'CUSTOMER:CREATING':
         return creating(action.flag, state);
+      case 'CUSTOMER:CREATE_FAILED':
+        return error(action.message, state);
       case 'CUSTOMER:UPDATE':
         return update(action.id, action.customer, state);
       case 'CUSTOMER:UPDATING':
         return updating(action.flag, state);
-      case 'CUSTOMER:ERROR_ON_UPDATE':
+      case 'CUSTOMER:UPDATE_FAILED':
         return error(action.message, state);
       case 'CUSTOMER:REMOVE':
         return remove(action.id, state);
       case 'CUSTOMER:REMOVING':
         return removing(action.flag, state);
-      case 'CUSTOMER:ERROR_ON_REMOVE':
+      case 'CUSTOMER:REMOVE_FAILED':
         return error(action.message, state);
       default:
         return state;

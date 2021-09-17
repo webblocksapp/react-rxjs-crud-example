@@ -22,6 +22,17 @@ const Header: React.FC = () => {
             >
               Main
             </Link>
+            <Link
+              color="white"
+              to="/preloaded-customer"
+              style={{
+                color: 'white',
+                textDecoration: 'none',
+                marginRight: 30,
+              }}
+            >
+              Preloaded
+            </Link>
           </Typography>
         </Box>
       </Toolbar>

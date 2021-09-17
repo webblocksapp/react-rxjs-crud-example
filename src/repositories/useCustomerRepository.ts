@@ -1,62 +1,67 @@
-import { Dispatch } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
 import { useCustomerApi } from '../apis';
-import { CustomerAction, RootState } from '../app-types';
+import { CustomerState } from '../app-types';
 import { Customer } from '../interfaces';
+import { useCustomerObservable } from '../observables';
 import { handleAxiosApi, getResponseErrorMessage } from '../utils/functions';
 
 export const useCustomerRepository = () => {
-  const dispatch = useDispatch<Dispatch<CustomerAction>>();
-  const customerState = useSelector((state: RootState) => state.customerState);
+  const customerObservable = useCustomerObservable();
   const customerApi = useCustomerApi();
+  const [customerState, setCustomerState] = useState<CustomerState>(customerObservable.getInitialState());
 
   const list = async () => {
     try {
-      dispatch({ type: 'CUSTOMER:LISTING', flag: true });
+      customerObservable.listing(true);
       const customers = await handleAxiosApi<Customer[]>(customerApi.list());
-      dispatch({ type: 'CUSTOMER:LIST', customers });
+      customerObservable.list(customers);
     } catch (error) {
-      dispatch({ type: 'CUSTOMER:LIST_FAILED', message: getResponseErrorMessage(error) });
+      customerObservable.error(getResponseErrorMessage(error));
     } finally {
-      dispatch({ type: 'CUSTOMER:LISTING', flag: false });
+      customerObservable.listing(false);
     }
   };
 
   const create = async (customer: Customer) => {
     try {
-      dispatch({ type: 'CUSTOMER:CREATING', flag: true });
+      customerObservable.creating(true);
       const createdCustomer = await handleAxiosApi<Customer>(customerApi.create(customer));
-      dispatch({ type: 'CUSTOMER:CREATE', customer: createdCustomer });
+      customerObservable.create(createdCustomer);
     } catch (error) {
-      dispatch({ type: 'CUSTOMER:CREATE_FAILED', message: getResponseErrorMessage(error) });
+      customerObservable.error(getResponseErrorMessage(error));
     } finally {
-      dispatch({ type: 'CUSTOMER:CREATING', flag: false });
+      customerObservable.creating(false);
     }
   };
 
   const update = async (id: number, customer: Customer) => {
     try {
-      dispatch({ type: 'CUSTOMER:UPDATING', flag: true });
+      customerObservable.updating(true);
       const updatedCustomer = await handleAxiosApi<Customer>(customerApi.update(id, customer));
-      dispatch({ type: 'CUSTOMER:UPDATE', id, customer: updatedCustomer });
+      customerObservable.update(id, updatedCustomer);
     } catch (error) {
-      dispatch({ type: 'CUSTOMER:UPDATE_FAILED', message: getResponseErrorMessage(error) });
+      customerObservable.error(getResponseErrorMessage(error));
     } finally {
-      dispatch({ type: 'CUSTOMER:UPDATING', flag: false });
+      customerObservable.updating(false);
     }
   };
 
   const remove = async (id: number) => {
     try {
-      dispatch({ type: 'CUSTOMER:REMOVING', flag: true });
+      customerObservable.removing(true);
       await handleAxiosApi(customerApi.remove(id));
-      dispatch({ type: 'CUSTOMER:REMOVE', id });
+      customerObservable.remove(id);
     } catch (error) {
-      dispatch({ type: 'CUSTOMER:REMOVE_FAILED', message: getResponseErrorMessage(error) });
+      customerObservable.error(getResponseErrorMessage(error));
     } finally {
-      dispatch({ type: 'CUSTOMER:REMOVING', flag: false });
+      customerObservable.removing(false);
     }
   };
+
+  useEffect(() => {
+    customerObservable.subscribe(setCustomerState);
+    return () => customerObservable.unsubscribe();
+  }, []);
 
   return {
     list,

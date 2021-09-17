@@ -1,16 +1,6 @@
 {
   "customers": [
     {
-      "email": "Simeon.Lehner@gmail.com",
-      "phone": "1-791-444-1577",
-      "id": 84137
-    },
-    {
-      "id": 94149,
-      "email": "connermunoz@enquility.com",
-      "phone": "+1 (870) 432-3889"
-    },
-    {
       "id": 13039,
       "email": "Reece_Ullrich55@gmail.com",
       "phone": "250.527.0886 x6420"
@@ -21,9 +11,9 @@
       "phone": "784.373.2214 x673"
     },
     {
-      "id": 47876,
-      "email": "Kirsten_Johnson96@gmail.com",
-      "phone": "337.750.4040"
+      "email": "Domingo_Toy@hotmail.com",
+      "phone": "1-266-857-6628 x55856",
+      "id": 47876
     },
     {
       "id": 9905,
@@ -31,9 +21,9 @@
       "phone": "(466) 859-9322 x9767"
     },
     {
-      "id": 47807,
-      "email": "Jannie_Gottlieb@hotmail.com",
-      "phone": "1-306-708-8099"
+      "id": 45848,
+      "email": "Rylee98@gmail.com",
+      "phone": "240-607-2559 x849"
     }
   ]
 }

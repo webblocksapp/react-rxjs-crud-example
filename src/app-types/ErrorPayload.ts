@@ -1,1 +1,3 @@
-export type ErrorPayload = { error: string };
+export type ErrorPayload = {
+  error: string;
+};

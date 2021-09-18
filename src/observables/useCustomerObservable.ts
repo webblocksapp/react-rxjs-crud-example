@@ -16,7 +16,7 @@ const initialState = {
 const stateSubject = new BehaviorSubject<CustomerState>(initialState);
 
 export const useCustomerObservable = () => {
-  const { setNextState, getInitialState, subscribe, unsubscribe } = useObservable<CustomerState, CustomerPayload>({
+  const { setNextState, getInitialState, subscribe } = useObservable<CustomerState, CustomerPayload>({
     stateSubject,
     initialState,
   });
@@ -80,6 +80,5 @@ export const useCustomerObservable = () => {
     error,
     getInitialState,
     subscribe,
-    unsubscribe,
   };
 };

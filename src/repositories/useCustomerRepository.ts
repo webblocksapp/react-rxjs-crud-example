@@ -59,8 +59,8 @@ export const useCustomerRepository = () => {
   };
 
   useEffect(() => {
-    customerObservable.subscribe(setCustomerState);
-    return () => customerObservable.unsubscribe();
+    const subscription = customerObservable.subscribe(setCustomerState);
+    return () => subscription.unsubscribe();
   }, []);
 
   return {

@@ -1,14 +1,11 @@
-import { useEffect, useState } from 'react';
 import { useCustomerApi } from '../apis';
-import { CustomerState } from '../app-types';
 import { Customer } from '../interfaces';
 import { useCustomerObservable } from '../observables';
 import { handleAxiosApi, getResponseErrorMessage } from '../utils/functions';
 
 export const useCustomerRepository = () => {
-  const customerObservable = useCustomerObservable();
   const customerApi = useCustomerApi();
-  const [customerState, setCustomerState] = useState<CustomerState>(customerObservable.getInitialState());
+  const customerObservable = useCustomerObservable();
 
   const list = async () => {
     try {
@@ -58,16 +55,11 @@ export const useCustomerRepository = () => {
     }
   };
 
-  useEffect(() => {
-    const subscription = customerObservable.subscribe(setCustomerState);
-    return () => subscription.unsubscribe();
-  }, []);
-
   return {
     list,
     create,
     update,
     remove,
-    ...customerState,
+    ...customerObservable.state,
   };
 };

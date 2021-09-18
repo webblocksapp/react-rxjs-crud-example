@@ -1,30 +1,26 @@
-import { BehaviorSubject, Subscription } from 'rxjs';
+import React, { useLayoutEffect } from 'react';
+import { BehaviorSubject } from 'rxjs';
 
 type UseObservableParams<TState> = {
   stateSubject: BehaviorSubject<TState>;
-  initialState: TState;
+  setState: React.Dispatch<React.SetStateAction<TState>>;
 };
 
-export function useObservable<TState, TPayload>({ stateSubject, initialState }: UseObservableParams<TState>) {
+export function useObservable<TState, TPayload>({ stateSubject, setState }: UseObservableParams<TState>) {
   const setNextState = (payload: TPayload) => {
     const state = stateSubject.getValue();
     stateSubject.next({ ...state, ...payload });
   };
 
-  const getInitialState = () => {
-    return initialState;
-  };
-
-  const subscribe = (callBack: (state: TState) => void): Subscription => {
-    return stateSubject.subscribe((currentState) => {
-      console.log(222);
-      callBack(currentState);
+  useLayoutEffect(() => {
+    const subscription = stateSubject.subscribe((currentState) => {
+      setState(currentState);
     });
-  };
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   return {
     setNextState,
-    getInitialState,
-    subscribe,
   };
 }

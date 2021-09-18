@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { BehaviorSubject } from 'rxjs';
 import { CustomerState } from '../app-types';
 import { CustomerPayload } from '../app-types/CustomerPayload';
@@ -16,9 +17,10 @@ const initialState = {
 const stateSubject = new BehaviorSubject<CustomerState>(initialState);
 
 export const useCustomerObservable = () => {
-  const { setNextState, getInitialState, subscribe } = useObservable<CustomerState, CustomerPayload>({
+  const [state, setState] = useState<CustomerState>(initialState);
+  const { setNextState } = useObservable<CustomerState, CustomerPayload>({
     stateSubject,
-    initialState,
+    setState,
   });
 
   const list = (customers: Customer[]) => {
@@ -78,7 +80,6 @@ export const useCustomerObservable = () => {
     remove,
     removing,
     error,
-    getInitialState,
-    subscribe,
+    state,
   };
 };

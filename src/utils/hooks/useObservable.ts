@@ -1,16 +1,8 @@
-import React, { useLayoutEffect } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { BehaviorSubject } from 'rxjs';
 
-type UseObservableParams<TState> = {
-  stateSubject: BehaviorSubject<TState>;
-  setState: React.Dispatch<React.SetStateAction<TState>>;
-};
-
-export function useObservable<TState, TPayload>({ stateSubject, setState }: UseObservableParams<TState>) {
-  const setNextState = (payload: TPayload) => {
-    const state = stateSubject.getValue();
-    stateSubject.next({ ...state, ...payload });
-  };
+export function useObservable<TState>(stateSubject: BehaviorSubject<TState>) {
+  const [state, setState] = useState(stateSubject.getValue());
 
   useLayoutEffect(() => {
     const subscription = stateSubject.subscribe((currentState) => {
@@ -20,7 +12,5 @@ export function useObservable<TState, TPayload>({ stateSubject, setState }: UseO
     return () => subscription.unsubscribe();
   }, []);
 
-  return {
-    setNextState,
-  };
+  return state;
 }

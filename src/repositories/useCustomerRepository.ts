@@ -55,11 +55,13 @@ export const useCustomerRepository = () => {
     }
   };
 
+  const getCustomerObservable = () => customerObservable.getObservable();
+
   return {
     list,
     create,
     update,
     remove,
-    ...customerObservable.state,
+    getCustomerObservable,
   };
 };

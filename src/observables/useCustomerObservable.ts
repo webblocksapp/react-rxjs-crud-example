@@ -1,9 +1,7 @@
-import { useState } from 'react';
 import { BehaviorSubject } from 'rxjs';
 import { CustomerState } from '../app-types';
 import { CustomerPayload } from '../app-types/CustomerPayload';
 import { Customer } from '../interfaces';
-import { useObservable } from '../utils/hooks';
 
 const initialState = {
   customers: [],
@@ -14,15 +12,9 @@ const initialState = {
   error: '',
 };
 
-const stateSubject = new BehaviorSubject<CustomerState>(initialState);
+const customerSubject = new BehaviorSubject<CustomerState>(initialState);
 
 export const useCustomerObservable = () => {
-  const [state, setState] = useState<CustomerState>(initialState);
-  const { setNextState } = useObservable<CustomerState, CustomerPayload>({
-    stateSubject,
-    setState,
-  });
-
   const list = (customers: Customer[]) => {
     setNextState({ customers, error: '' });
   };
@@ -32,7 +24,7 @@ export const useCustomerObservable = () => {
   };
 
   const create = (customer: Customer) => {
-    const customers = [...stateSubject.getValue().customers, customer];
+    const customers = [...customerSubject.getValue().customers, customer];
     setNextState({ customers, error: '' });
   };
 
@@ -41,7 +33,7 @@ export const useCustomerObservable = () => {
   };
 
   const update = (id: number, customer: Customer) => {
-    let customers = [...stateSubject.getValue().customers];
+    let customers = [...customerSubject.getValue().customers];
     customers = customers.map((item) => {
       if (item.id === id) {
         return { ...item, ...customer };
@@ -58,7 +50,7 @@ export const useCustomerObservable = () => {
   };
 
   const remove = (id: number) => {
-    const customers = [...stateSubject.getValue().customers].filter((customer) => customer.id !== id);
+    const customers = [...customerSubject.getValue().customers].filter((customer) => customer.id !== id);
     setNextState({ customers, error: '' });
   };
 
@@ -68,6 +60,15 @@ export const useCustomerObservable = () => {
 
   const error = (message: string) => {
     setNextState({ error: message });
+  };
+
+  const setNextState = (payload: CustomerPayload) => {
+    const state = customerSubject.getValue();
+    customerSubject.next({ ...state, ...payload });
+  };
+
+  const getObservable = () => {
+    return customerSubject;
   };
 
   return {
@@ -80,6 +81,6 @@ export const useCustomerObservable = () => {
     remove,
     removing,
     error,
-    state,
+    getObservable,
   };
 };

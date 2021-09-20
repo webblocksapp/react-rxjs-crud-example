@@ -65,4 +65,4 @@ const CustomerCard: React.FC<CustomerCardProps> = ({ customer }) => {
   );
 };
 
-export default CustomerCard;
+export default React.memo(CustomerCard);
